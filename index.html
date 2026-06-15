@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sleep Better Daily</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    h1 { color: #2c5f8a; }
+    .post { border-bottom: 1px solid #eee; padding: 20px 0; }
+    .post a { font-size: 1.2em; color: #2c5f8a; text-decoration: none; }
+    .post a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>Sleep Better Daily</h1>
+  <p>Science-backed sleep and recovery education.</p>
+  <div id="posts"><p>Loading posts...</p></div>
+  <script>
+    fetch('https://api.github.com/repos/iclosa-serpiente/sleep-better-daily/contents/tests')
+      .then(r => r.json())
+      .then(files => {
+        const posts = files.filter(f => f.name.endsWith('.html'));
+        const div = document.getElementById('posts');
+        if (!posts.length) { div.innerHTML = '<p>Posts coming soon.</p>'; return; }
+        div.innerHTML = posts.map(f => {
+          const title = f.name.replace('.html','').replace(/-/g,' ');
+          return `<div class="post"><a href="tests/${f.name}">${title}</a></div>`;
+        }).join('');
+      })
+      .catch(() => document.getElementById('posts').innerHTML = '<p>Posts coming soon.</p>');
+  </script>
+</body>
+</html>
